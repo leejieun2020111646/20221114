@@ -1,0 +1,88 @@
+#include <stdio.h>
+
+int bin[32]; //2진수를 받을 32비트 배열 선언
+int get_num;//사용자로부터 입력받을 값을 저장할 변수 선언
+void binary1(int get_num); //각각의 진수 변환 함수 선언
+void binary2(int get_num);
+void oct_8(int get_num);
+void hex_16(int get_num);
+
+int main() {
+	printf("정수를 입력해 주세요: "); //정수를 입력받는다
+	scanf_s("%d", &get_num);//숫자를 입력받음
+	if (get_num >= 0) { //양수일 경우
+		printf("2진수: "); binary1(get_num); printf("\n");
+		printf("8진수: "); oct_8(get_num); printf("\n");
+		printf("16진수: "); hex_16(get_num); printf("\n");
+	}
+	else { //음수일 경우
+		printf("2진수: "); binary2(get_num); printf("\n");
+	}
+	return 0;
+}
+
+void binary1(int get_num) { //양수-이진수, 사용자로부터 입력받은 정수값을 매개변수로 함
+	int k = 0;//반복변수 k
+	while (get_num > 0) {
+		bin[k] = get_num % 2;//입력받은 정수를 2로 나눠 나머지를 bin 배열에 저장
+		get_num /= 2;
+		k++;
+	}
+	for (k = 31; k >= 0; k--) {
+		printf("%d", bin[k]); //2진수 출력
+	}
+}
+void binary2(int get_num) {//음수-이진수
+	int k = 0;//반복변수 k
+	get_num++; //음수를 변환하려 하므로 우선 1을 더해줌
+	get_num *= -1; //-1을 곱해 양수화 함
+	while (get_num > 0) {
+		bin[k] = get_num % 2;
+		get_num /= 2;
+		k++;
+	}
+	for (k = 31; k >= 0; k--) 
+		printf("%d", !(bin[k])); //1의 보수화 한 값을 출력함
+	
+}
+int M, N; //몫과 나머지를 받을 변수
+void oct_8(int get_num) //8진수 출력
+{
+	int oct[20]; //8진수를 받을 32비트 배열 선언
+	int k = 0;//반복변수 k
+
+	do {
+		M = get_num / 8; //8로 나눈 몫
+		N = get_num % 8; //8로 나눈 나머지
+		oct[k] = N;
+		k++;
+		get_num = M;
+	} while (M >= 8);
+
+	oct[k] = M;
+	int i = k; //반복변수 i
+	do {
+		printf("%d", oct[i]); //8진수 출력
+		i--;
+	} while (i >= 0);
+}
+void hex_16(int get_num) //16진수 출력
+{
+	char H[16] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
+	int k=0; //반복변수 k
+	int n=0; //반복변수 i
+	char hex[20];
+	do {
+		M = get_num / 16; //16으로 나눈 몫
+		N = get_num % 16; //16으로 나눈 나머지
+		hex[k] = H[N];
+		k++;
+		get_num = M;
+	} while (M >= 16);
+	hex[k] = H[M];
+	k = n;
+	do {
+		printf("%c", hex[k]); //16진수 출력
+		k--;
+	} while (k >= 0);
+}
